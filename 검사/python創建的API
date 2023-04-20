@@ -1,0 +1,21 @@
+from flask import Flask, jsonify, request
+import json
+
+app = Flask(__name__)
+
+@app.route("/wmpjs/savejson/<filename>", methods=["GET", "POST"])
+def save_json(filename):
+    if request.method == "POST":
+        # 获取 JSON 数据
+        data = request.get_json()
+
+        # 保存 JSON 数据到文件中
+        with open(filename, "w") as f:
+            json.dump(data, f)
+
+        return jsonify({"message": f"JSON data saved in {filename}"})
+    else:
+        return jsonify({"message": "Use POST request to save JSON data"})
+
+if __name__ == "__main__":
+    app.run(debug=True)
